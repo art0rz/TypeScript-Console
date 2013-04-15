@@ -1,0 +1,7 @@
+{
+	"name": "TypeScript Console",
+	"version": "0.0.1",
+	"description": "A TypeScript console within the Web Inspector.",
+	"devtools_page": "typescript-extension.html",
+	"manifest_version": 2
+}
