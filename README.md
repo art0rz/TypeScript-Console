@@ -5,5 +5,5 @@ TypeScript-Console is a Chrome devtools extension that allows you to interact vi
 
 Licence
 =======
-Apache 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html) 
+MIT (http://opensource.org/licenses/MIT)
 
