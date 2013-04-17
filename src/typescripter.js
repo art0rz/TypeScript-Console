@@ -1,5 +1,7 @@
 var FileShim = (function () {
-    function FileShim() { }
+    function FileShim() {
+        this.buffer = "";
+    }
     FileShim.prototype.Write = function (input) {
         this.buffer += input;
     };
