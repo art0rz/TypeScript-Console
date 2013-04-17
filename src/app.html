@@ -1,11 +1,18 @@
 <!doctype html>
 <html lang="en">
 <head>
+
+    <script src="lib/beautify.js" type="text/javascript" charset="utf-8"></script>
     <script src="ace/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="ace/mode-typescript.js" type="text/javascript" charset="utf-8"></script>
     <script src="ace/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
     <script src="ace/theme-monokai.js" type="text/javascript" charset="utf-8"></script>    
-    <script src="lib/typescript.js" type="text/javascript" charset="utf-8"></script>
+    <script src="lib/typescript.js" type="text/javascript" charset="utf-8"></script>    
+
+    <script src="shims.js" type="text/javascript" charset="utf-8"></script>
+    <script src="compliationService.js" type="text/javascript" charset="utf-8"></script>
+    
+
     <meta charset="UTF-8">
     <title></title>
     <style>
@@ -24,11 +31,9 @@
         }
     </style>
 </head>
-<body>
-    <div id="ts-editor">Hello</div>
-    <div id="js-output">Hello</div>
-    <script src="typescripter.js" type="text/javascript" charset="utf-8"></script>
-
-
+<body>    
+    <div id="ts-editor"></div>
+    <div id="js-output"></div>
+    <script src="app.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>
