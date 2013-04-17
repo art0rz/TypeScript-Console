@@ -36,7 +36,8 @@ var compliatiionService = new CompliationService();
 
 editor.getSession().on("change", e => {
     var js = compliatiionService.compile(editor.getValue());
-    output.setValue(js_beautify(js,null));
+    output.setValue(js_beautify(js, null));
+    output.selection.clearSelection();
 });
 
 
