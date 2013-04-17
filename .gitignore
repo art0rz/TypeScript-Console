@@ -7,3 +7,4 @@ src/compliationService.js
 src/shims.js
 src/compliationService.js.map
 src/compliationService.min.js
+src.pem
