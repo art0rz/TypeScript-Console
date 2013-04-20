@@ -8,3 +8,6 @@ src/shims.js
 src/compliationService.js.map
 src/compliationService.min.js
 src.pem
+src/historyProvider.js
+src/historyProvider.js.map
+src/historyProvider.min.js
