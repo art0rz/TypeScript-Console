@@ -1,5 +1,5 @@
 /// <reference path="lib/def.d.ts" />
-define(["require", "exports", 'ace/ace', './CompilationService', './HistoryProvider', 'beautify', 'knockout'], function (require, exports, ace, CompilationService, HistoryProvider, beautify, ko) {
+define(["require", "exports", './CompilationService', './HistoryProvider', 'beautify', 'knockout'], function (require, exports, CompilationService, HistoryProvider, beautify, ko) {
     var TypeScriptConsole = (function () {
         function TypeScriptConsole() {
             this.typeScriptErrors = ko.observableArray();
@@ -16,15 +16,17 @@ define(["require", "exports", 'ace/ace', './CompilationService', './HistoryProvi
         TypeScriptConsole.prototype.initializeEditors = function () {
             var _this = this;
             this._output = ace.edit("js-output");
-            this._output.setTheme("lib/ace/theme-chrome");
+            this._output.setTheme("ace/theme/chrome");
             this._output.getSession().setUseWorker(false);
-            this._output.getSession().setMode("lib/ace/mode-javascript");
+            this._output.getSession().setMode("ace/mode/javascript");
             this._output.setReadOnly(true);
+            this._output.$blockScrolling = Infinity;
             this._editor = ace.edit("ts-editor");
-            this._editor.setTheme("lib/ace/theme-chrome");
+            this._editor.setTheme("ace/theme/chrome");
             this._editor.getSession().setUseWorker(false);
-            this._editor.getSession().setMode("lib/ace/mode-typescript");
+            this._editor.getSession().setMode("ace/mode/typescript");
             this._editor.getSession().setUseSoftTabs(true);
+            this._editor.$blockScrolling = Infinity;
             this._editor.getSession().on("change", function (e) { return _this.handleOnChange(); });
             this._editor.commands.addCommand({
                 name: "compileIt",

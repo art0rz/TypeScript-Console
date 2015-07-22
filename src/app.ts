@@ -1,6 +1,5 @@
 /// <reference path="lib/def.d.ts" />
 
-import ace = require('ace/ace');
 import CompilationService = require('./CompilationService');
 import HistoryProvider = require('./HistoryProvider');
 import beautify = require('beautify');
@@ -38,16 +37,18 @@ class TypeScriptConsole
 	private initializeEditors()
 	{
 		this._output = ace.edit("js-output");
-		this._output.setTheme("lib/ace/theme-chrome");
+		this._output.setTheme("ace/theme/chrome");
 		this._output.getSession().setUseWorker(false);
-		this._output.getSession().setMode("lib/ace/mode-javascript");
+		this._output.getSession().setMode("ace/mode/javascript");
 		this._output.setReadOnly(true);
+		this._output.$blockScrolling = Infinity;
 
 		this._editor = ace.edit("ts-editor");
-		this._editor.setTheme("lib/ace/theme-chrome");
+		this._editor.setTheme("ace/theme/chrome");
 		this._editor.getSession().setUseWorker(false);
-		this._editor.getSession().setMode("lib/ace/mode-typescript");
+		this._editor.getSession().setMode("ace/mode/typescript");
 		this._editor.getSession().setUseSoftTabs(true);
+		this._editor.$blockScrolling = Infinity;
 
 		this._editor.getSession().on("change", (e) => this.handleOnChange());
 

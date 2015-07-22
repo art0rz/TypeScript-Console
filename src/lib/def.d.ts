@@ -7,3 +7,18 @@
 declare module "ace/ace" {
 	export = ace;
 }
+
+declare module "lib/ace/mode-typescript" {
+	var exp:any;
+	export = exp;
+}
+
+declare module "lib/ace/mode-javascript" {
+	var exp:any;
+	export = exp;
+}
+
+declare module "lib/ace/theme-chrome" {
+	var exp:any;
+	export = exp;
+}
