@@ -91,6 +91,7 @@ var app = () =>
 			}
 
 			var js = compliatiionService.compile(ts);
+			output.setValue(js);
 			output.selection.clearSelection();
 		}, 1000);
 	});

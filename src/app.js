@@ -59,6 +59,7 @@ define(["require", "exports", 'ace/ace', './CompilationService', './HistoryProvi
                     return;
                 }
                 var js = compliatiionService.compile(ts);
+                output.setValue(js);
                 output.selection.clearSelection();
             }, 1000);
         });
