@@ -6,6 +6,7 @@ requirejs.config({
 	map: {},
 	paths: {
 		'ace/ace': 'lib/ace/ace',
+		'knockout': 'lib/knockout/knockout',
 		'js-beautify': 'lib/js-beautify/js-beautify'
 	},
 	shim: {
@@ -15,5 +16,5 @@ requirejs.config({
 requirejs([
 	'app'
 ], function (app) {
-	app();
+	new app();
 });

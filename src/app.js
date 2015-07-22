@@ -1,68 +1,86 @@
 /// <reference path="lib/def.d.ts" />
 define(["require", "exports", 'ace/ace', './CompilationService', './HistoryProvider'], function (require, exports, ace, CompilationService, HistoryProvider) {
-    var historyProvider = new HistoryProvider();
-    var historyDebug = document.getElementById("historyIndex");
-    var compileTimeout;
-    var app = function () {
-        console.log(ace);
-        var output = ace.edit("js-output");
-        output.setTheme("lib/ace/theme-chrome");
-        output.getSession().setUseWorker(false);
-        output.getSession().setMode("lib/ace/mode-javascript");
-        output.setReadOnly(true);
-        var editor = ace.edit("ts-editor");
-        editor.setTheme("lib/ace/theme-chrome");
-        editor.getSession().setUseWorker(false);
-        editor.getSession().setMode("lib/ace/mode-typescript");
-        editor.getSession().setUseSoftTabs(true);
-        var executeConsole = function () {
-            historyProvider.push(editor.getValue());
-            var js = compliatiionService.compile(editor.getValue());
-            chrome.devtools.inspectedWindow.eval(js, function (result, isException) {
+    var TypeScriptConsole = (function () {
+        function TypeScriptConsole() {
+            this._historyProvider = new HistoryProvider();
+            this._compilationService = new CompilationService();
+            this.initializeEditors();
+        }
+        TypeScriptConsole.prototype.initializeEditors = function () {
+            var _this = this;
+            this._output = ace.edit("js-output");
+            this._output.setTheme("lib/ace/theme-chrome");
+            this._output.getSession().setUseWorker(false);
+            this._output.getSession().setMode("lib/ace/mode-javascript");
+            this._output.setReadOnly(true);
+            this._editor = ace.edit("ts-editor");
+            this._editor.setTheme("lib/ace/theme-chrome");
+            this._editor.getSession().setUseWorker(false);
+            this._editor.getSession().setMode("lib/ace/mode-typescript");
+            this._editor.getSession().setUseSoftTabs(true);
+            this._editor.getSession().on("change", function (e) { return _this.handleOnChange(); });
+            this._editor.commands.addCommand({
+                name: "compileIt",
+                exec: function () { return _this.executeConsole(); },
+                bindKey: "Ctrl-Return|Command-Return|Shift-Return"
             });
-            output.setValue("");
+            this._editor.commands.addCommand({
+                name: "next",
+                exec: function () { return _this.prevHistory(); },
+                bindKey: "Ctrl-Up|Command-Up|Shift-Up"
+            });
+            this._editor.commands.addCommand({
+                name: "prev",
+                exec: function () { return _this.nextHistory(); },
+                bindKey: "Ctrl-Down|Command-Down|Shift-Down"
+            });
         };
-        var nextHistory = function () {
-            var data = historyProvider.next();
-            editor.setValue(data);
+        TypeScriptConsole.prototype.executeConsole = function () {
+            this._historyProvider.push(this._editor.getValue());
+            this._compilationService.compile(this._editor.getValue());
+            chrome.devtools.inspectedWindow.eval(this._output.getValue(), function (result, isException) {
+            });
         };
-        var prevHistory = function () {
-            var data = historyProvider.previous();
+        TypeScriptConsole.prototype.prevHistory = function () {
+            var data = this._historyProvider.previous();
             if (data != null) {
-                editor.setValue(data);
+                this._editor.setValue(data);
             }
         };
-        var compileOptions = {
-            name: "compileIt",
-            exec: executeConsole,
-            bindKey: "Ctrl-Return|Command-Return|Shift-Return"
+        TypeScriptConsole.prototype.nextHistory = function () {
+            var data = this._historyProvider.next();
+            this._editor.setValue(data);
         };
-        var historyBack = {
-            name: "next",
-            exec: prevHistory,
-            bindKey: "Ctrl-Up|Command-Up|Shift-Up"
+        TypeScriptConsole.prototype.handleOnChange = function () {
+            var _this = this;
+            var ts = this._editor.getValue();
+            if (ts == void 0) {
+                return;
+            }
+            var out = this._compilationService.compile(ts);
+            if (out.errors.length > 0) {
+                console.log(out.errors.map(function (err) { return (_this.getErrCategoryString(err.category) + "(" + err.start + ", " + err.length + ") TS" + err.code + ": " + err.messageText); }));
+            }
+            this._output.setValue(out.output);
+            this._output.selection.clearSelection();
         };
-        var historyForward = {
-            name: "prev",
-            exec: nextHistory,
-            bindKey: "Ctrl-Down|Command-Down|Shift-Down"
+        TypeScriptConsole.prototype.getErrCategoryString = function (category) {
+            switch (category) {
+                case ts.DiagnosticCategory.Error:
+                    {
+                        return 'Error';
+                    }
+                case ts.DiagnosticCategory.Message:
+                    {
+                        return 'Message';
+                    }
+                case ts.DiagnosticCategory.Warning:
+                    {
+                        return 'Warning';
+                    }
+            }
         };
-        editor.commands.addCommand(compileOptions);
-        editor.commands.addCommand(historyBack);
-        editor.commands.addCommand(historyForward);
-        var compliatiionService = new CompilationService();
-        editor.getSession().on("change", function (e) {
-            clearTimeout(compileTimeout);
-            compileTimeout = setTimeout(function () {
-                var ts = editor.getValue();
-                if (ts == void 0) {
-                    return;
-                }
-                var js = compliatiionService.compile(ts);
-                output.setValue(js);
-                output.selection.clearSelection();
-            }, 1000);
-        });
-    };
-    return app;
+        return TypeScriptConsole;
+    })();
+    return TypeScriptConsole;
 });
