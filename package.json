@@ -1,0 +1,25 @@
+{
+  "name": "TypeScript-Console",
+  "version": "0.0.1",
+  "description": "A TypeScript REPL for Chrome DevTools",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/art0rz/TypeScript-Console.git"
+  },
+  "keywords": [
+    "typescript",
+    "tsc",
+    "repl",
+    "devtools",
+    "chrome"
+  ],
+  "author": "Stuart van Beek",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/art0rz/TypeScript-Console/issues"
+  },
+  "homepage": "https://github.com/art0rz/TypeScript-Console",
+  "dependencies": {
+    "typescript": "^1.5.3"
+  }
+}
