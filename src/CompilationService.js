@@ -63,40 +63,5 @@ define(["require", "exports", './shim', './lib/typescript/lib-include'], functio
         };
         return TSLanguageServiceHost;
     })();
-    var TSCompilerHost = (function () {
-        function TSCompilerHost(contents) {
-            this.contents = contents;
-        }
-        TSCompilerHost.prototype.getOutput = function () {
-            return this.output;
-        };
-        TSCompilerHost.prototype.getSourceFile = function (fileName, languageVersion, onError) {
-            if (fileName === "file.ts") {
-                return ts.createSourceFile(fileName, this.contents, languageVersion);
-            }
-            if (fileName === "lib.d.ts") {
-                return ts.createSourceFile(fileName, libdts, languageVersion);
-            }
-        };
-        TSCompilerHost.prototype.getDefaultLibFileName = function (options) {
-            return "lib.d.ts";
-        };
-        TSCompilerHost.prototype.writeFile = function (fileName, data, writeByteOrderMark, onError) {
-            this.output = data;
-        };
-        TSCompilerHost.prototype.getCurrentDirectory = function () {
-            return "";
-        };
-        TSCompilerHost.prototype.getCanonicalFileName = function (fileName) {
-            return fileName;
-        };
-        TSCompilerHost.prototype.useCaseSensitiveFileNames = function () {
-            return false;
-        };
-        TSCompilerHost.prototype.getNewLine = function () {
-            return "\n";
-        };
-        return TSCompilerHost;
-    })();
     return CompilationService;
 });
