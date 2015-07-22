@@ -7,7 +7,7 @@ requirejs.config({
 	paths: {
 		'ace/ace': 'lib/ace/ace',
 		'knockout': 'lib/knockout/knockout',
-		'js-beautify': 'lib/js-beautify/js-beautify'
+		'beautify': 'lib/js-beautify/js-beautify'
 	},
 	shim: {
 	}

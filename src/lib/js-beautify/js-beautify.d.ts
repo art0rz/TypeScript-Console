@@ -3,9 +3,9 @@
 // Definitions by: Josh Goldberg <https://github.com/JoshuaKGoldberg/>
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
 
-interface JSBeautify
+declare module "beautify"
 {
-	(js_source_text:string, options?:{
+	export function js_beautify(js_source_text:string, options?:{
 		indent_size?: number;
 		indent_char?: string;
 		eol?: string;
@@ -27,9 +27,4 @@ interface JSBeautify
 		wrap_attributes_indent_size: number;
 		end_with_newline: boolean;
 	}): string;
-}
-
-declare module "js-beautify"
-{
-	export = JSBeautify;
 }

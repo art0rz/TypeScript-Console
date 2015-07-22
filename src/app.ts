@@ -3,7 +3,7 @@
 import ace = require('ace/ace');
 import CompilationService = require('./CompilationService');
 import HistoryProvider = require('./HistoryProvider');
-import beautify = require('js-beautify');
+import beautify = require('beautify');
 import ko = require('knockout');
 
 declare var chrome:any;
@@ -117,7 +117,7 @@ class TypeScriptConsole
 			this.typeScriptErrors(void 0);
 		}
 
-		this._output.setValue(out.output);
+		this._output.setValue(beautify.js_beautify(out.output));
 		this._output.selection.clearSelection();
 	}
 

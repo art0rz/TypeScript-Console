@@ -1,5 +1,5 @@
 /// <reference path="lib/def.d.ts" />
-define(["require", "exports", 'ace/ace', './CompilationService', './HistoryProvider', 'knockout'], function (require, exports, ace, CompilationService, HistoryProvider, ko) {
+define(["require", "exports", 'ace/ace', './CompilationService', './HistoryProvider', 'beautify', 'knockout'], function (require, exports, ace, CompilationService, HistoryProvider, beautify, ko) {
     var TypeScriptConsole = (function () {
         function TypeScriptConsole() {
             this.typeScriptErrors = ko.observableArray();
@@ -70,7 +70,7 @@ define(["require", "exports", 'ace/ace', './CompilationService', './HistoryProvi
             else {
                 this.typeScriptErrors(void 0);
             }
-            this._output.setValue(out.output);
+            this._output.setValue(beautify.js_beautify(out.output));
             this._output.selection.clearSelection();
         };
         TypeScriptConsole.prototype.getErrLogString = function (err) {
