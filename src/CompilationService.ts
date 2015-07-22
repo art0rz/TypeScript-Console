@@ -71,17 +71,30 @@ class TSLanguageServiceHost implements ts.LanguageServiceHost
 
 	public getScriptFileNames():string[]
 	{
-		return ['file.ts'];
+		return ['lib.d.ts', 'file.ts'];
 	}
 
 	public getScriptVersion(fileName:string):string
 	{
-		return this._version.toString();
+		if (fileName == 'file.ts')
+		{
+			return this._version.toString();
+		}
+
+		return '0';
 	}
 
 	public getScriptSnapshot(fileName:string):ts.IScriptSnapshot
 	{
-		return ts.ScriptSnapshot.fromString(this._source);
+		if(fileName == 'lib.d.ts')
+		{
+			return ts.ScriptSnapshot.fromString(libdts);
+		}
+
+		if(fileName == 'file.ts')
+		{
+			return ts.ScriptSnapshot.fromString(this._source);
+		}
 	}
 
 	public getCurrentDirectory():string
@@ -101,7 +114,6 @@ class TSCompilerHost implements ts.CompilerHost
 
 	constructor(private contents:string)
 	{
-
 	}
 
 	public getOutput():string

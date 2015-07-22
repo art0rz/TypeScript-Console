@@ -39,13 +39,21 @@ define(["require", "exports", './shim', './lib/typescript/lib-include'], functio
             return this._compilerOptions;
         };
         TSLanguageServiceHost.prototype.getScriptFileNames = function () {
-            return ['file.ts'];
+            return ['lib.d.ts', 'file.ts'];
         };
         TSLanguageServiceHost.prototype.getScriptVersion = function (fileName) {
-            return this._version.toString();
+            if (fileName == 'file.ts') {
+                return this._version.toString();
+            }
+            return '0';
         };
         TSLanguageServiceHost.prototype.getScriptSnapshot = function (fileName) {
-            return ts.ScriptSnapshot.fromString(this._source);
+            if (fileName == 'lib.d.ts') {
+                return ts.ScriptSnapshot.fromString(libdts);
+            }
+            if (fileName == 'file.ts') {
+                return ts.ScriptSnapshot.fromString(this._source);
+            }
         };
         TSLanguageServiceHost.prototype.getCurrentDirectory = function () {
             return "";

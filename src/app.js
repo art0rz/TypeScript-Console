@@ -67,6 +67,9 @@ define(["require", "exports", 'ace/ace', './CompilationService', './HistoryProvi
             if (out.errors.length > 0) {
                 this.typeScriptErrors(out.errors);
             }
+            else {
+                this.typeScriptErrors(void 0);
+            }
             this._output.setValue(out.output);
             this._output.selection.clearSelection();
         };

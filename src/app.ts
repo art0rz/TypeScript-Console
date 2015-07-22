@@ -32,7 +32,7 @@ class TypeScriptConsole
 	{
 		var pos = err.file.getLineAndCharacterOfPosition(err.start);
 		this._editor.moveCursorTo(pos.line, pos.character);
-		this._editor.focus()
+		this._editor.focus();
 	}
 
 	private initializeEditors()
@@ -111,6 +111,10 @@ class TypeScriptConsole
 		if(out.errors.length > 0)
 		{
 			this.typeScriptErrors(out.errors);
+		}
+		else
+		{
+			this.typeScriptErrors(void 0);
 		}
 
 		this._output.setValue(out.output);
