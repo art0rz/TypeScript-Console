@@ -16,12 +16,23 @@ class TypeScriptConsole
 	private _editor:AceAjax.Editor;
 	private _output:AceAjax.Editor;
 
+	private typeScriptErrors:KnockoutObservableArray<ts.Diagnostic> = ko.observableArray<ts.Diagnostic>();
+
 	constructor()
 	{
 		this._historyProvider = new HistoryProvider();
 		this._compilationService = new CompilationService();
 
 		this.initializeEditors();
+
+		ko.applyBindings(this, document.getElementById('ko_root'));
+	}
+
+	public handleErrorClick(err:ts.Diagnostic)
+	{
+		var pos = err.file.getLineAndCharacterOfPosition(err.start);
+		this._editor.moveCursorTo(pos.line, pos.character);
+		this._editor.focus()
 	}
 
 	private initializeEditors()
@@ -62,9 +73,13 @@ class TypeScriptConsole
 		this._historyProvider.push(this._editor.getValue());
 		this._compilationService.compile(this._editor.getValue());
 
-		chrome.devtools.inspectedWindow.eval(this._output.getValue(), function(result, isException)
-		{
-		});
+		chrome.devtools.inspectedWindow.eval(
+			this._output.getValue(),
+			(result, isException)  =>
+			{
+
+			}
+		);
 	}
 
 	private prevHistory()
@@ -95,13 +110,21 @@ class TypeScriptConsole
 
 		if(out.errors.length > 0)
 		{
-			console.log(out.errors.map(
-				(err:ts.Diagnostic) => `${this.getErrCategoryString(err.category)}(${err.start}, ${err.length}) TS${err.code}: ${err.messageText}`
-			));
+			this.typeScriptErrors(out.errors);
 		}
 
 		this._output.setValue(out.output);
 		this._output.selection.clearSelection();
+	}
+
+	private getErrLogString(err:ts.Diagnostic)
+	{
+		return `${this.getErrCategoryString(err.category)}(${err.start}:${err.length}) TS${err.code}: ${ts.flattenDiagnosticMessageText(err.messageText, '\n')}`;
+	}
+
+	private getErrLogFileString(err:ts.Diagnostic)
+	{
+		return `${err.start}:${err.length}`;
 	}
 
 	private getErrCategoryString(category:ts.DiagnosticCategory)

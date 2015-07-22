@@ -1,11 +1,60 @@
-﻿body {
-  margin: 0;
-}
+html, body, .container {
+  height: 100%; }
+
+body {
+  margin: 0; }
+
 div.help {
   background: rgba(0, 0, 0, 0.07);
-  height: 20px;
-}
+  height: 20px; }
+
 div.help span {
   float: right;
-  padding-right: 15px;
-}
+  padding-right: 15px; }
+
+#errors .error {
+  clear: both;
+  line-height: 20px;
+  font: 20px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace; }
+  #errors .error .file {
+    float: right;
+    text-decoration: underline; }
+
+.editor {
+  height: calc(100% - 20px);
+  width: 100%; }
+  .editor td {
+    vertical-align: top; }
+  .editor .ace {
+    height: 100%;
+    width: 50%; }
+  .editor #ts-editor, .editor #js-output {
+    width: 100%;
+    height: 100%; }
+  .editor #errors {
+    border-top: 5px solid #f0f0f0;
+    max-height: 120px;
+    overflow: auto; }
+  .editor .console-message-wrapper {
+    display: flex;
+    border-bottom: 1px solid #f0f0f0; }
+  .editor .console-message {
+    clear: right;
+    position: relative;
+    padding: 3px 22px 3px 0;
+    margin-left: 3px;
+    flex: auto;
+    display: flex; }
+  .editor .console-message-text {
+    font-size: 12px !important;
+    font-family: Consolas, Lucida Console, monospace;
+    flex: auto; }
+  .editor .console-message-url {
+    color: #212121;
+    cursor: pointer;
+    float: right;
+    text-align: right;
+    max-width: 100%;
+    margin-left: 4px; }
+    .editor .console-message-url:hover {
+      text-decoration: underline; }

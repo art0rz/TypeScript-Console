@@ -1,0 +1,101 @@
+html,
+body,
+.container {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+}
+
+div.help {
+	background: rgba(0, 0, 0, 0.07);
+	height: 20px;
+}
+
+div.help span {
+	float: right;
+	padding-right: 15px;
+}
+
+#errors {
+	.error {
+		clear: both;
+		line-height: 20px;
+		font: 20px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+		
+		.file {
+			float: right;
+			text-decoration: underline;
+		}
+	}
+}
+
+.container {
+	&.has-error {
+		#ts-editor,
+		#js-output {
+		}
+	}
+}
+
+.editor {
+	height: calc(100% - 20px);
+	width: 100%;
+
+
+	td {
+		vertical-align: top;
+	}
+	
+	.ace {
+		height: 100%;
+		width: 50%;
+	}
+
+	#ts-editor,
+	#js-output {
+		width: 100%;
+		height: 100%;
+	}
+
+	#errors {
+		border-top: 5px solid #f0f0f0;
+		max-height: 120px;
+		overflow: auto;
+	}
+
+	.console-message-wrapper {
+		display: flex;
+		border-bottom: 1px solid rgb(240, 240, 240);
+	}
+
+	.console-message {
+		clear: right;
+		position: relative;
+		padding: 3px 22px 3px 0;
+		margin-left: 3px;
+		flex: auto;
+		display: flex;
+	}
+
+	.console-message-text {
+		font-size: 12px !important;
+		font-family: Consolas, Lucida Console, monospace;
+		flex: auto;
+	}
+
+	.console-message-url {
+		color: rgb(33%, 33%, 33%);
+		cursor: pointer;
+
+		float: right;
+		text-align: right;
+		max-width: 100%;
+		margin-left: 4px;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}

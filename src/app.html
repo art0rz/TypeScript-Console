@@ -1,33 +1,52 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+	<head>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
 
-    <meta charset="UTF-8">
-    <title></title>
-    <style>
-        #ts-editor {
-            height: 100%;
-            width: 50%;
-            position: fixed;
-            left: 0;
-        }
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body id="ko_root">
+		<div class="container"
+		     data-bind="css: { 'has-error': typeScriptErrors() != void 0 && typeScriptErrors().length > 0 }">
+			<div class="help">
+				<span>Ctrl+Enter - Runs JS in console</span><span id="historyIndex">0</span>
+			</div>
+			<table class="editor">
+				<tr>
+					<td class="ace">
+						<div id="ts-editor"></div>
+					</td>
+					<td class="ace">
+						<div id="js-output"></div>
+					</td>
+				</tr>
+				<!--ko if: typeScriptErrors() != void 0 && typeScriptErrors().length > 0-->
+				<tr>
+					<td colspan="2">
+						<div id="errors">
+							<!--ko foreach: typeScriptErrors()-->
+							<div class="console-message-wrapper console-log-level">
+								<div class="console-message">
+										<span class="console-message-text source-code">
+											<a class="console-message-url webkit-html-resource-link"
+											   data-bind="click: $root.handleErrorClick.bind($root, $data)">
+												<!--ko text: $root.getErrLogFileString($data)--><!--/ko-->
+											</a>
+											<span><!--ko text: $root.getErrLogString($data)--><!--/ko--></span>
+										</span>
+								</div>
+							</div>
+							<!--/ko-->
+						</div>
+					</td>
+				</tr>
+				<!--/ko-->
+			</table>
+		</div>
 
-        #js-output {
-            position: fixed;
-            right: 0;
-            height: 100%;
-            width: 50%;
-        }
-    </style>
-</head>
-<body>    
-    <div class="help"><span>Ctrl+Enter - Runs JS in console</span><span id="historyIndex">0</span></div>
-    <div id="ts-editor"></div>
-    <div id="js-output"></div>
-
-    <script src="lib/typescript/typescript.js"></script>
-    <script src="lib/require.js"></script>
-    <script src="index.js"></script>
-</body>
+		<script src="lib/typescript/typescript.js"></script>
+		<script src="lib/require.js"></script>
+		<script src="index.js"></script>
+	</body>
 </html>
