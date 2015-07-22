@@ -10,8 +10,8 @@ define(["require", "exports", './CompilationService', './HistoryProvider', 'beau
         }
         TypeScriptConsole.prototype.handleErrorClick = function (err) {
             var pos = err.file.getLineAndCharacterOfPosition(err.start);
-            this._editor.moveCursorTo(pos.line, pos.character);
             this._editor.focus();
+            this._editor.moveCursorTo(pos.line, pos.character);
         };
         TypeScriptConsole.prototype.initializeEditors = function () {
             var _this = this;

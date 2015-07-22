@@ -30,8 +30,8 @@ class TypeScriptConsole
 	public handleErrorClick(err:ts.Diagnostic)
 	{
 		var pos = err.file.getLineAndCharacterOfPosition(err.start);
-		this._editor.moveCursorTo(pos.line, pos.character);
 		this._editor.focus();
+		this._editor.moveCursorTo(pos.line, pos.character);
 	}
 
 	private initializeEditors()
