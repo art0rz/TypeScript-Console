@@ -1,16 +1,15 @@
-/// <reference path="lib/def.d.ts" />
-define(["require", "exports", './shim', './lib/typescript/lib-include'], function (require, exports, shim, libdts) {
+/// <reference path="../lib/def.d.ts" />
+define(["require", "exports", './shim', '../lib/typescript/lib-include'], function (require, exports, shim, libdts) {
     var CompilationService = (function () {
         function CompilationService() {
             this.output = new shim.FileShim();
             this.error = new shim.FileShim();
             this.settings = new shim.IOShim();
-            this._host = new TSLanguageServiceHost({
-                target: 1 /* ES5 */
-            });
+            this._host = new TSLanguageServiceHost();
             this._service = ts.createLanguageService(this._host);
         }
-        CompilationService.prototype.compile = function (contents) {
+        CompilationService.prototype.compile = function (contents, options) {
+            this._host.setCompilerSettings(options);
             this._host.updateSource(contents);
             var output = '';
             var errors = [].concat(this._service.getSemanticDiagnostics('file.ts'), this._service.getSyntacticDiagnostics('file.ts'));
@@ -26,11 +25,13 @@ define(["require", "exports", './shim', './lib/typescript/lib-include'], functio
         return CompilationService;
     })();
     var TSLanguageServiceHost = (function () {
-        function TSLanguageServiceHost(_compilerOptions) {
-            this._compilerOptions = _compilerOptions;
+        function TSLanguageServiceHost() {
             this._version = 0;
             this._source = '';
         }
+        TSLanguageServiceHost.prototype.setCompilerSettings = function (settings) {
+            this._compilerOptions = settings;
+        };
         TSLanguageServiceHost.prototype.updateSource = function (source) {
             this._source = source;
             this._version++;

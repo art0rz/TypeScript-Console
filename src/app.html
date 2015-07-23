@@ -12,37 +12,43 @@
 			<div class="help">
 				<span>Ctrl+Enter - Runs JS in console</span><span id="historyIndex">0</span>
 			</div>
-			<table class="editor">
-				<tr>
-					<td class="ace">
-						<div id="ts-editor"></div>
-					</td>
-					<td class="ace">
-						<div id="js-output"></div>
-					</td>
-				</tr>
-				<!--ko if: typeScriptErrors() != void 0 && typeScriptErrors().length > 0-->
-				<tr>
-					<td colspan="2">
-						<div id="errors">
-							<!--ko foreach: typeScriptErrors()-->
-							<div class="console-message-wrapper console-log-level">
-								<div class="console-message">
-										<span class="console-message-text source-code">
-											<a class="console-message-url webkit-html-resource-link"
-											   data-bind="click: $root.handleErrorClick.bind($root, $data)">
-												<!--ko text: $root.getErrLogFileString($data)--><!--/ko-->
-											</a>
-											<span><!--ko text: $root.getErrLogString($data)--><!--/ko--></span>
-										</span>
-								</div>
-							</div>
-							<!--/ko-->
-						</div>
-					</td>
-				</tr>
+			<!--ko allowBindings: false-->
+			<div id="settings_root" class="settings">
+				<span>Compiler settings</span>
+				<!--ko foreach: _compilerOptions-->
+				<label>
+					<!--ko text: label--><!--/ko-->
+					<!--ko if: type == $root.InputType.SELECT-->
+					<select data-bind="options: list, optionsText: 'label', value: value, optionsValue: 'value'"></select>
+					<!--/ko-->
+					<!--ko if: type == $root.InputType.TOGGLE-->
+					<input type="checkbox" data-bind="checked: value"/>
+					<!--/ko-->
+				</label>
 				<!--/ko-->
-			</table>
+			</div>
+			<!--/ko-->
+			<div class="editor">
+				<div id="ts-editor" class="pane"></div>
+				<div id="js-output" class="pane"></div>
+			</div>
+			<!--ko if: typeScriptErrors() != void 0 && typeScriptErrors().length > 0-->
+			<div class="error-console">
+				<!--ko foreach: typeScriptErrors()-->
+				<div class="console-message-wrapper console-log-level">
+					<div class="console-message">
+							<span class="console-message-text source-code">
+								<a class="console-message-url webkit-html-resource-link"
+								   data-bind="click: $root.handleErrorClick.bind($root, $data)">
+									<!--ko text: $root.getErrLogFileString($data)--><!--/ko-->
+								</a>
+								<span><!--ko text: $root.getErrLogString($data)--><!--/ko--></span>
+							</span>
+					</div>
+				</div>
+				<!--/ko-->
+			</div>
+			<!--/ko-->
 		</div>
 
 		<script src="lib/typescript/typescript.js"></script>

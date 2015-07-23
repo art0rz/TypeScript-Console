@@ -1,7 +1,7 @@
-/// <reference path="lib/def.d.ts" />
+/// <reference path="../lib/def.d.ts" />
 
 import shim = require('./shim');
-import libdts = require('./lib/typescript/lib-include');
+import libdts = require('../lib/typescript/lib-include');
 
 class CompilationService
 {
@@ -18,15 +18,14 @@ class CompilationService
 		this.error = new shim.FileShim();
 		this.settings = new shim.IOShim();
 
-		this._host = new TSLanguageServiceHost({
-			target: ts.ScriptTarget.ES5
-		});
+		this._host = new TSLanguageServiceHost();
 
 		this._service = ts.createLanguageService(this._host);
 	}
 
-	public compile(contents:string):{errors:Array<ts.Diagnostic>;output:string}
+	public compile(contents:string, options:ts.CompilerOptions):{errors:Array<ts.Diagnostic>;output:string}
 	{
+		this._host.setCompilerSettings(options);
 		this._host.updateSource(contents);
 		var output = '';
 
@@ -53,9 +52,15 @@ class TSLanguageServiceHost implements ts.LanguageServiceHost
 {
 	private _version:number = 0;
 	private _source:string = '';
+	private _compilerOptions:ts.CompilerOptions
 
-	constructor(private _compilerOptions:ts.CompilerOptions)
+	constructor()
 	{
+	}
+
+	public setCompilerSettings(settings:ts.CompilerOptions)
+	{
+		this._compilerOptions = settings;
 	}
 
 	public updateSource(source:string)
@@ -76,7 +81,7 @@ class TSLanguageServiceHost implements ts.LanguageServiceHost
 
 	public getScriptVersion(fileName:string):string
 	{
-		if (fileName == 'file.ts')
+		if(fileName == 'file.ts')
 		{
 			return this._version.toString();
 		}

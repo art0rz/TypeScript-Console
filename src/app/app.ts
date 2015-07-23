@@ -1,7 +1,8 @@
-/// <reference path="lib/def.d.ts" />
+/// <reference path="../lib/def.d.ts" />
 
 import CompilationService = require('./CompilationService');
 import HistoryProvider = require('./HistoryProvider');
+import SettingsController = require('./SettingsController');
 import beautify = require('beautify');
 import ko = require('knockout');
 
@@ -17,6 +18,8 @@ class TypeScriptConsole
 
 	private typeScriptErrors:KnockoutObservableArray<ts.Diagnostic> = ko.observableArray<ts.Diagnostic>();
 
+	private _settingsController:SettingsController = new SettingsController(() => this.handleSettingsChange());
+
 	constructor()
 	{
 		this._historyProvider = new HistoryProvider();
@@ -25,6 +28,7 @@ class TypeScriptConsole
 		this.initializeEditors();
 
 		ko.applyBindings(this, document.getElementById('ko_root'));
+		ko.applyBindings(this._settingsController, document.getElementById('settings_root'));
 	}
 
 	public handleErrorClick(err:ts.Diagnostic)
@@ -72,7 +76,6 @@ class TypeScriptConsole
 	private executeConsole()
 	{
 		this._historyProvider.push(this._editor.getValue());
-		this._compilationService.compile(this._editor.getValue());
 
 		chrome.devtools.inspectedWindow.eval(
 			this._output.getValue(),
@@ -98,6 +101,11 @@ class TypeScriptConsole
 		this._editor.setValue(data);
 	}
 
+	private handleSettingsChange()
+	{
+		this.handleOnChange();
+	}
+
 	private handleOnChange()
 	{
 		var ts = this._editor.getValue();
@@ -107,7 +115,7 @@ class TypeScriptConsole
 			return;
 		}
 
-		var out = this._compilationService.compile(ts);
+		var out = this._compilationService.compile(ts, this._settingsController.getCompilerOptions());
 
 		if(out.errors.length > 0)
 		{

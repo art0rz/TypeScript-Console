@@ -4,48 +4,113 @@ body,
 	height: 100%;
 }
 
+.container {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	align-content: stretch;
+	align-items: stretch;
+}
+
 body {
 	margin: 0;
 }
 
-div.help {
+.help,
+.settings {
+	order: 0;
+	flex: 0 1 auto;
+	align-self: auto;
 	background: rgba(0, 0, 0, 0.07);
-	height: 20px;
+	padding: 3px 5px;
 }
 
-div.help span {
+.help span {
 	float: right;
 	padding-right: 15px;
 }
 
-#errors {
-	.error {
-		clear: both;
-		line-height: 20px;
-		font: 20px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
-		
-		.file {
-			float: right;
-			text-decoration: underline;
-		}
+.settings {
+	display: flex;
+	flex-wrap: wrap;
+
+	span,
+	label {
+		display: inline-block;
+		padding: 0 20px 0 0;
+		box-sizing: border-box;
+	}
+
+	span {
+		font-weight: bold;
 	}
 }
 
-.container {
-	&.has-error {
-		#ts-editor,
-		#js-output {
-		}
+
+.error-console {
+	border-top: 5px solid #f0f0f0;
+	max-height: 120px;
+	overflow: auto;
+
+	&:after {
+		content: '';
+		display: block;
+		clear: both;
+	}
+}
+
+.console-message-wrapper {
+	display: flex;
+	border-bottom: 1px solid rgb(240, 240, 240);
+}
+
+.console-message {
+	clear: right;
+	position: relative;
+	padding: 3px 22px 3px 0;
+	margin-left: 3px;
+	flex: auto;
+	display: flex;
+}
+
+.console-message-text {
+	font-size: 12px !important;
+	font-family: Consolas, Lucida Console, monospace;
+	flex: auto;
+}
+
+.console-message-url {
+	color: rgb(33%, 33%, 33%);
+	cursor: pointer;
+
+	float: right;
+	text-align: right;
+	max-width: 100%;
+	margin-left: 4px;
+
+	&:hover {
+		text-decoration: underline;
 	}
 }
 
 .editor {
-	height: calc(100% - 20px);
-	width: 100%;
+	order: 0;
+	flex: 0 1 100%;
+	align-self: auto;
 
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	align-content: stretch;
+	align-items: stretch;
+	height: 100%;
 
-	td {
-		vertical-align: top;
+	.pane {
+		order: 0;
+		flex: 0 1 50%;
+		align-self: auto;
 	}
 	
 	.ace {
@@ -56,46 +121,6 @@ div.help span {
 	#ts-editor,
 	#js-output {
 		width: 100%;
-		height: 100%;
 	}
 
-	#errors {
-		border-top: 5px solid #f0f0f0;
-		max-height: 120px;
-		overflow: auto;
-	}
-
-	.console-message-wrapper {
-		display: flex;
-		border-bottom: 1px solid rgb(240, 240, 240);
-	}
-
-	.console-message {
-		clear: right;
-		position: relative;
-		padding: 3px 22px 3px 0;
-		margin-left: 3px;
-		flex: auto;
-		display: flex;
-	}
-
-	.console-message-text {
-		font-size: 12px !important;
-		font-family: Consolas, Lucida Console, monospace;
-		flex: auto;
-	}
-
-	.console-message-url {
-		color: rgb(33%, 33%, 33%);
-		cursor: pointer;
-
-		float: right;
-		text-align: right;
-		max-width: 100%;
-		margin-left: 4px;
-
-		&:hover {
-			text-decoration: underline;
-		}
-	}
 }

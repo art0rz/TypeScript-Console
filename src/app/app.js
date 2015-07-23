@@ -1,12 +1,15 @@
-/// <reference path="lib/def.d.ts" />
-define(["require", "exports", './CompilationService', './HistoryProvider', 'beautify', 'knockout'], function (require, exports, CompilationService, HistoryProvider, beautify, ko) {
+/// <reference path="../lib/def.d.ts" />
+define(["require", "exports", './CompilationService', './HistoryProvider', './SettingsController', 'beautify', 'knockout'], function (require, exports, CompilationService, HistoryProvider, SettingsController, beautify, ko) {
     var TypeScriptConsole = (function () {
         function TypeScriptConsole() {
+            var _this = this;
             this.typeScriptErrors = ko.observableArray();
+            this._settingsController = new SettingsController(function () { return _this.handleSettingsChange(); });
             this._historyProvider = new HistoryProvider();
             this._compilationService = new CompilationService();
             this.initializeEditors();
             ko.applyBindings(this, document.getElementById('ko_root'));
+            ko.applyBindings(this._settingsController, document.getElementById('settings_root'));
         }
         TypeScriptConsole.prototype.handleErrorClick = function (err) {
             var pos = err.file.getLineAndCharacterOfPosition(err.start);
@@ -46,7 +49,6 @@ define(["require", "exports", './CompilationService', './HistoryProvider', 'beau
         };
         TypeScriptConsole.prototype.executeConsole = function () {
             this._historyProvider.push(this._editor.getValue());
-            this._compilationService.compile(this._editor.getValue());
             chrome.devtools.inspectedWindow.eval(this._output.getValue(), function (result, isException) {
             });
         };
@@ -60,12 +62,15 @@ define(["require", "exports", './CompilationService', './HistoryProvider', 'beau
             var data = this._historyProvider.next();
             this._editor.setValue(data);
         };
+        TypeScriptConsole.prototype.handleSettingsChange = function () {
+            this.handleOnChange();
+        };
         TypeScriptConsole.prototype.handleOnChange = function () {
             var ts = this._editor.getValue();
             if (ts == void 0) {
                 return;
             }
-            var out = this._compilationService.compile(ts);
+            var out = this._compilationService.compile(ts, this._settingsController.getCompilerOptions());
             if (out.errors.length > 0) {
                 this.typeScriptErrors(out.errors);
             }
