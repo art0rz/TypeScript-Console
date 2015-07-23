@@ -32,6 +32,8 @@ body {
     box-sizing: border-box; }
   .settings span {
     font-weight: bold; }
+  .settings input {
+    vertical-align: middle; }
 
 .error-console {
   border-top: 5px solid #f0f0f0;

@@ -9,6 +9,9 @@
 		"48": "badge.png",
 		"128": "128.png"
 	},
+	"permissions": [
+		"storage"
+	],
 	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
 	"homepage_url": "http://www.sepier.com"
 }

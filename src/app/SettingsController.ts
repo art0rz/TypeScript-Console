@@ -1,5 +1,7 @@
 /// <reference path="../lib/def.d.ts" />
 
+declare var chrome:any;
+
 import ko = require('knockout');
 
 enum InputType {
@@ -56,7 +58,30 @@ class SettingsController
 
 	constructor(private _onChange:() => void)
 	{
-		this._compilerOptions.forEach((opt) => opt.value.subscribe(() => this._onChange()));
+		chrome.storage.sync.get('compilerOptions', (result) =>
+		{
+			if(result == void 0 || result.compilerOptions == void 0)
+			{
+				return
+			}
+
+			Object.keys(result.compilerOptions).forEach((key)  =>
+			{
+				this._compilerOptions.forEach((opt) => {
+					if (opt.configurationKey == key) {
+						opt.value(result.compilerOptions[key]);
+					}
+				})
+			});
+		});
+
+		this._compilerOptions.forEach((opt) => opt.value.subscribe(() =>
+		{
+			chrome.storage.sync.set({compilerOptions: this.getCompilerOptions()}, () =>
+			{
+				this._onChange();
+			});
+		}));
 	}
 
 	public getCompilerOptions():ts.CompilerOptions

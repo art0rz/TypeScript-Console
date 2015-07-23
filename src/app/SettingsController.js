@@ -43,7 +43,23 @@ define(["require", "exports", 'knockout'], function (require, exports, ko) {
                     value: ko.observable(false)
                 }
             ];
-            this._compilerOptions.forEach(function (opt) { return opt.value.subscribe(function () { return _this._onChange(); }); });
+            chrome.storage.sync.get('compilerOptions', function (result) {
+                if (result == void 0 || result.compilerOptions == void 0) {
+                    return;
+                }
+                Object.keys(result.compilerOptions).forEach(function (key) {
+                    _this._compilerOptions.forEach(function (opt) {
+                        if (opt.configurationKey == key) {
+                            opt.value(result.compilerOptions[key]);
+                        }
+                    });
+                });
+            });
+            this._compilerOptions.forEach(function (opt) { return opt.value.subscribe(function () {
+                chrome.storage.sync.set({ compilerOptions: _this.getCompilerOptions() }, function () {
+                    _this._onChange();
+                });
+            }); });
         }
         SettingsController.prototype.getCompilerOptions = function () {
             var config = {};
